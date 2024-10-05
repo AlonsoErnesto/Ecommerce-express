@@ -4,7 +4,6 @@ import { env } from '../utils/envConfig';
 import { ServiceResponse } from '../models/serviceResponse';
 import { StatusCodes } from 'http-status-codes';
 
-// Clase JWT para manejar la validación
 class Middlwares {
   private secretKey: string;
 
@@ -18,9 +17,9 @@ class Middlwares {
       return decoded;
     } catch (error) {
       return ServiceResponse.failure(
-        'An error occurred while verifying the token.',
+        'Error al verificar el token.',
         null,
-        StatusCodes.UNAUTHORIZED // Cambiado a UNAUTHORIZED
+        StatusCodes.UNAUTHORIZED
       );
     }
   }
@@ -38,14 +37,27 @@ class Middlwares {
           )
         );
     }
-    next(); // Si es admin, continua con el siguiente middleware
+    next();
   }
 
-  // Método para utilizar como middleware en rutas protegidas
+  verifyCookie(req: Request, res: Response, next: NextFunction) {
+    // const token = req.headers['authorization']?.split(' ')[1];
+    const token = req.cookies.auth_token;
+    console.log('TOKENSS', token);
+    if (!token) return res.sendStatus(StatusCodes.UNAUTHORIZED);
+
+    const decoded = this.verifyToken(token);
+    if (decoded instanceof ServiceResponse) {
+      return res.status(decoded.statusCode).json(decoded);
+    }
+
+    (req as any).user = decoded;
+    next();
+  }
+
   public middleware() {
     return (req: Request, res: Response, next: NextFunction) => {
-      const token = req.headers['authorization']?.split(' ')[1];
-
+      const token = req.cookies.authToken;
       if (!token) {
         return res
           .status(StatusCodes.UNAUTHORIZED)
@@ -59,19 +71,17 @@ class Middlwares {
       }
 
       const decoded = this.verifyToken(token);
-
       if (decoded instanceof ServiceResponse) {
-        return res.status(decoded.statusCode).json(decoded); // Maneja el caso de error
+        return res.status(decoded.statusCode).json(decoded);
       }
-
-      (req as any).user = decoded; // Se agrega el payload decodificado al objeto `req` para su uso posterior.
+      (req as any).user = decoded;
       next();
     };
   }
 }
 
 // Exportar el middleware ya configurado
-export const jwtMiddleware = new Middlwares(env.SECRET_KEY_JWT).middleware();
-export const isAdminMiddleware = new Middlwares(env.SECRET_KEY_JWT).isAdmin.bind(
-  new Middlwares(env.SECRET_KEY_JWT)
-);
+const middlewareInstance = new Middlwares(env.SECRET_KEY_JWT);
+export const verifyCookie = middlewareInstance.verifyCookie.bind(middlewareInstance);
+export const jwtMiddleware = middlewareInstance.middleware();
+export const isAdminMiddleware = middlewareInstance.isAdmin.bind(middlewareInstance);

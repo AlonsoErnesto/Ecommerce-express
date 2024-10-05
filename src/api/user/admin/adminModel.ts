@@ -1,11 +1,11 @@
 import mongoose, { Schema } from 'mongoose';
-import { User } from './userSchema';
+import { Admin } from './adminSchema';
 
-const UserSchema = new Schema<User & Document>(
+const AdminSchema = new Schema<Admin & Document>(
   {
     name: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
-    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    role: { type: String, enum: ['user', 'admin'], default: 'admin' },
     password: { type: String, required: true },
   },
   {
@@ -13,4 +13,4 @@ const UserSchema = new Schema<User & Document>(
   }
 );
 
-export const UserModel = mongoose.model<User & Document>('User', UserSchema);
+export const AdminModel = mongoose.model<Admin & Document>('Admin', AdminSchema);
