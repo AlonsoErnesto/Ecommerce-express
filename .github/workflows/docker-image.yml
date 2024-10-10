@@ -25,14 +25,15 @@ jobs:
       # Build and tag the production Docker image
       - name: Build the Docker image
         run: |
-          docker build . --file Dockerfile --tag ghcr.io/${{ github.repository }}:${{ github.sha }}
+          docker build . --file Dockerfile --tag ghcr.io/alonsoernesto/ecommerce-express:${{ github.sha }}
           if [ "${{ github.ref }}" == "refs/heads/master" ]; then
-            docker tag ghcr.io/${{ github.repository }}:${{ github.sha }} ghcr.io/${{ github.repository }}:latest
+            docker tag ghcr.io/alonsoernesto/ecommerce-express:${{ github.sha }} ghcr.io/alonsoernesto/ecommerce-express:latest
           fi
 
       # Push the production Docker image
       - name: Push the Docker image
         if: github.ref == 'refs/heads/master'
         run: |
-          docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
-          docker push ghcr.io/${{ github.repository }}:latest
+          docker push ghcr.io/alonsoernesto/ecommerce-express:${{ github.sha }}
+          docker push ghcr.io/alonsoernesto/ecommerce-express:latest
+          # docker push ghcr.io/${{ github.repository }}:latest
