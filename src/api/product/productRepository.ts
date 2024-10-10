@@ -1,6 +1,6 @@
-import { Model, Document } from 'mongoose';
+import type { Document, Model } from 'mongoose';
 import { ProductModel } from './productModel';
-import { Product } from './productSchema';
+import type { Product } from './productSchema';
 
 export class ProductRepository {
   private productModel: Model<Product & Document>;
@@ -29,7 +29,10 @@ export class ProductRepository {
       .populate('category', 'name description');
   }
 
-  async update(productId: string, productData: Partial<Product>): Promise<Product | null> {
+  async update(
+    productId: string,
+    productData: Partial<Product>,
+  ): Promise<Product | null> {
     return await this.productModel
       .findByIdAndUpdate(productId, productData, {
         new: true,

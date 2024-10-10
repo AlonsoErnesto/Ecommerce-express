@@ -1,6 +1,6 @@
-import { Model } from 'mongoose';
-import { Client, ClientWithId } from './clientSchema';
+import type { Model } from 'mongoose';
 import { ClientModel } from './clientModel';
+import type { Client, ClientWithId } from './clientSchema';
 
 export class ClientRepository {
   private readonly clientModel: Model<Client & Document>;

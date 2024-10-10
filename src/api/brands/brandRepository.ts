@@ -1,6 +1,6 @@
-import { Document, Model } from 'mongoose';
-import { Brand } from './brandSchema';
+import type { Document, Model } from 'mongoose';
 import { BrandModel } from './brandModel';
+import type { Brand } from './brandSchema';
 
 export class BrandRepository {
   private brandModel: Model<Brand & Document>;
@@ -23,7 +23,9 @@ export class BrandRepository {
   }
 
   async update(id: string, brandData: Partial<Brand>): Promise<Brand | null> {
-    return await this.brandModel.findByIdAndUpdate(id, brandData, { new: true });
+    return await this.brandModel.findByIdAndUpdate(id, brandData, {
+      new: true,
+    });
   }
 
   async delete(id: string): Promise<Brand | null> {

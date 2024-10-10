@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { Inventory } from './inventorySchema';
+import type { Inventory } from './inventorySchema';
 
 const InventorySchema = new Schema<Inventory & Document>({
   product_id: { type: String, required: true },
@@ -8,4 +8,7 @@ const InventorySchema = new Schema<Inventory & Document>({
   quantity: { type: Number, required: true },
 });
 
-export const InventoryModel = mongoose.model<Inventory & Document>('Inventory', InventorySchema);
+export const InventoryModel = mongoose.model<Inventory & Document>(
+  'Inventory',
+  InventorySchema,
+);

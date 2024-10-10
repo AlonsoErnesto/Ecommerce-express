@@ -1,4 +1,4 @@
-import { Request, RequestHandler, Response } from 'express';
+import type { Request, RequestHandler, Response } from 'express';
 import { BrandService } from './brandService';
 
 export class BrandController {
@@ -7,7 +7,10 @@ export class BrandController {
     this.brandService = service;
   }
 
-  createBrand: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  createBrand: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const parsedData = req.body;
       const brand = await this.brandService.createBrand(parsedData);
@@ -16,7 +19,10 @@ export class BrandController {
       res.status(400).json({ error });
     }
   };
-  getAllBrands: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  getAllBrands: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const brands = await this.brandService.getAllBrands();
       res.json(brands);
@@ -25,7 +31,10 @@ export class BrandController {
     }
   };
 
-  getBrandById: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  getBrandById: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const brand = await this.brandService.getBrandById(req.params.id);
       if (brand) {
@@ -38,10 +47,16 @@ export class BrandController {
     }
   };
 
-  updateBrand: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  updateBrand: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const parsedData = req.body;
-      const brand = await this.brandService.updateBrand(req.params.id, parsedData);
+      const brand = await this.brandService.updateBrand(
+        req.params.id,
+        parsedData,
+      );
       if (brand) {
         res.json(brand);
       } else {
@@ -52,7 +67,10 @@ export class BrandController {
     }
   };
 
-  deleteBrand: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  deleteBrand: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const brand = await this.brandService.deleteBrand(req.params.id);
       if (brand) {

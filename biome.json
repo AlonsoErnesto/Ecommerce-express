@@ -2,9 +2,10 @@
   "$schema": "https://biomejs.dev/schemas/1.9.1/schema.json",
   "formatter": {
     "indentStyle": "space",
-    "lineWidth": 120
+    "lineWidth": 80,
+    "lineEnding": "crlf"
   },
-  "organizeImports": { "enabled": true },
+  "organizeImports": { "enabled": false },
   "linter": {
     "enabled": true,
     "rules": {
@@ -20,6 +21,13 @@
       "complexity": {
         "noForEach": "off"
       }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "lineEnding": "crlf",
+      "attributePosition": "multiline"
     }
   }
 }

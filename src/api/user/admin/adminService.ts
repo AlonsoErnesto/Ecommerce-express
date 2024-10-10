@@ -1,11 +1,11 @@
-import { StatusCodes } from 'http-status-codes';
-import bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 import { ServiceResponse } from '@/common/models/serviceResponse';
-import { logger } from '@/server';
-import { Admin } from './adminSchema';
 import { env } from '@/common/utils/envConfig';
+import { logger } from '@/server';
+import bcrypt from 'bcrypt';
+import { StatusCodes } from 'http-status-codes';
+import * as jwt from 'jsonwebtoken';
 import { AdminRepository } from './adminRepository';
+import type { Admin } from './adminSchema';
 
 export class AdminService {
   private adminRepository: AdminRepository;
@@ -14,22 +14,37 @@ export class AdminService {
     this.adminRepository = repository;
   }
 
-  async login(email: string, password: string): Promise<ServiceResponse<string | null>> {
+  async login(
+    email: string,
+    password: string,
+  ): Promise<ServiceResponse<string | null>> {
     const admin = await this.adminRepository.findByEmail(email);
     if (!admin) {
-      const errorMessage = `Admin not found!`;
+      const errorMessage = 'Admin not found!';
       logger.error(errorMessage);
-      return ServiceResponse.failure('Admin not found', null, StatusCodes.UNAUTHORIZED);
+      return ServiceResponse.failure(
+        'Admin not found',
+        null,
+        StatusCodes.UNAUTHORIZED,
+      );
     }
     const isPasswordValid = await bcrypt.compare(password, admin.password);
     if (!isPasswordValid) {
-      return ServiceResponse.failure('Invalid credentials', null, StatusCodes.UNAUTHORIZED);
+      return ServiceResponse.failure(
+        'Invalid credentials',
+        null,
+        StatusCodes.UNAUTHORIZED,
+      );
     }
 
     // Generar el token JWT
-    const token = jwt.sign({ adminId: admin._id, role: admin.role }, env.SECRET_KEY_JWT, {
-      expiresIn: '3h', // Expira en 3 horas
-    });
+    const token = jwt.sign(
+      { adminId: admin._id, role: admin.role },
+      env.SECRET_KEY_JWT,
+      {
+        expiresIn: '3h', // Expira en 3 horas
+      },
+    );
 
     return ServiceResponse.success(token, 'Login successful', StatusCodes.OK);
   }
@@ -38,7 +53,7 @@ export class AdminService {
     try {
       const existingAdmin = await this.adminRepository.findByEmailOrName(
         adminData.email,
-        adminData.name
+        adminData.name,
       );
       if (existingAdmin) throw new Error('Email or Name already in use');
       //
@@ -49,7 +64,11 @@ export class AdminService {
     } catch (ex) {
       const errorMessage = `Error creating admin: $${(ex as Error).message}`;
       logger.error(errorMessage);
-      return ServiceResponse.failure(`${errorMessage}`, null, StatusCodes.INTERNAL_SERVER_ERROR);
+      return ServiceResponse.failure(
+        `${errorMessage}`,
+        null,
+        StatusCodes.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -58,13 +77,21 @@ export class AdminService {
     try {
       const users = await this.adminRepository.findAll();
       if (!users || users.length === 0) {
-        return ServiceResponse.failure('No Admins found', null, StatusCodes.NOT_FOUND);
+        return ServiceResponse.failure(
+          'No Admins found',
+          null,
+          StatusCodes.NOT_FOUND,
+        );
       }
       return ServiceResponse.success<Admin[]>('Users found', users);
     } catch (ex) {
       const errorMessage = `Error finding all admins: $${(ex as Error).message}`;
       logger.error(errorMessage);
-      return ServiceResponse.failure(`${errorMessage}`, null, StatusCodes.INTERNAL_SERVER_ERROR);
+      return ServiceResponse.failure(
+        `${errorMessage}`,
+        null,
+        StatusCodes.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -73,7 +100,11 @@ export class AdminService {
     try {
       const user = await this.adminRepository.findById(id);
       if (!user) {
-        return ServiceResponse.failure('Admin not found', null, StatusCodes.NOT_FOUND);
+        return ServiceResponse.failure(
+          'Admin not found',
+          null,
+          StatusCodes.NOT_FOUND,
+        );
       }
       return ServiceResponse.success<Admin>('User found', user);
     } catch (ex) {
@@ -82,7 +113,7 @@ export class AdminService {
       return ServiceResponse.failure(
         'An error occurred while finding admin.',
         null,
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { Cart } from './cartSchema';
+import type { Cart } from './cartSchema';
 
 const CartSchema = new Schema<Cart & Document>({
   user_id: { type: String, required: true },

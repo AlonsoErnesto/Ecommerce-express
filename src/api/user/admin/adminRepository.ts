@@ -1,6 +1,6 @@
-import { Model } from 'mongoose';
-import { Admin, AdminWithId } from './adminSchema';
+import type { Model } from 'mongoose';
 import { AdminModel } from './adminModel';
+import type { Admin, AdminWithId } from './adminSchema';
 
 export class AdminRepository {
   private readonly adminModel: Model<Admin & Document>;
@@ -26,8 +26,13 @@ export class AdminRepository {
     return await this.adminModel.findOne({ email });
   }
 
-  async update(id: string, adminData: Partial<Admin>): Promise<AdminWithId | null> {
-    return await this.adminModel.findByIdAndUpdate(id, adminData, { new: true });
+  async update(
+    id: string,
+    adminData: Partial<Admin>,
+  ): Promise<AdminWithId | null> {
+    return await this.adminModel.findByIdAndUpdate(id, adminData, {
+      new: true,
+    });
   }
 
   async delete(id: string): Promise<AdminWithId | null> {

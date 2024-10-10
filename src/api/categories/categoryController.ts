@@ -1,4 +1,4 @@
-import { Request, RequestHandler, Response } from 'express';
+import type { Request, RequestHandler, Response } from 'express';
 import { CategoryService } from './categoryService';
 
 export class CategoryController {
@@ -8,7 +8,10 @@ export class CategoryController {
     this.categoryService = service;
   }
 
-  createCategory: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  createCategory: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const parsedData = req.body;
       const category = await this.categoryService.createCategory(parsedData);

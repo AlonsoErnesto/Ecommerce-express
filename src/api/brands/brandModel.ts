@@ -1,5 +1,5 @@
-import mongoose, { Document, Schema } from 'mongoose';
-import { Brand } from './brandSchema';
+import mongoose, { type Document, Schema } from 'mongoose';
+import type { Brand } from './brandSchema';
 
 const BrandSchema = new Schema<Brand & Document>({
   name: { type: String, required: true },
@@ -7,4 +7,7 @@ const BrandSchema = new Schema<Brand & Document>({
   logo_url: { type: String, required: true },
 });
 
-export const BrandModel = mongoose.model<Brand & Document>('Brand', BrandSchema);
+export const BrandModel = mongoose.model<Brand & Document>(
+  'Brand',
+  BrandSchema,
+);

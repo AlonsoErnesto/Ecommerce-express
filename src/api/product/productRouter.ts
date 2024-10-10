@@ -1,10 +1,10 @@
+import { createApiResponse } from '@/api-docs/openAPIResponseBuilders';
+import { validateRequest } from '@/common/utils/httpHandlers';
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 import express, { type Router } from 'express';
-import { productController } from './productController';
-import { createApiResponse } from '@/api-docs/openAPIResponseBuilders';
 import { z } from 'zod';
+import { productController } from './productController';
 import { GetProductSchema, ProductSchema } from './productSchema';
-import { validateRequest } from '@/common/utils/httpHandlers';
 
 export const productRegistry = new OpenAPIRegistry();
 export const productRouter: Router = express.Router();
@@ -45,7 +45,11 @@ productRegistry.registerPath({
   request: { params: GetProductSchema.shape.params },
   responses: createApiResponse(z.array(ProductSchema), 'Success'),
 });
-productRouter.get('/:id', validateRequest(GetProductSchema), productController.getProductById);
+productRouter.get(
+  '/:id',
+  validateRequest(GetProductSchema),
+  productController.getProductById,
+);
 
 // Actualizar un producto
 productRouter.put('/:id', productController.updateProduct);

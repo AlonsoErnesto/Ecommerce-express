@@ -1,6 +1,6 @@
+import { env } from '@/common/utils/envConfig';
 import { logger } from '@/server';
 import MongoConnection from './connection';
-import { env } from '@/common/utils/envConfig';
 const MONGO_URI = env.DB_URL_MONGO || 'process.env.MONGO_URI';
 
 export const connectDB = async () => {

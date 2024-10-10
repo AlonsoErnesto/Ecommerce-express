@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import express, { type Router } from 'express';
 import { brandController } from './brandController';
 
 export const brandRouter: Router = express.Router();

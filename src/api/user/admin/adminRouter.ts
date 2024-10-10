@@ -1,10 +1,10 @@
-import express, { type Router } from 'express';
-import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
-import { z } from 'zod';
 import { createApiResponse } from '@/api-docs/openAPIResponseBuilders';
-import { adminController } from './adminController';
-import { GetAdminSchema, AdminSchema } from './adminSchema';
 import { verifyCookie } from '@/common/middleware/authenticateToken';
+import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
+import express, { type Router } from 'express';
+import { z } from 'zod';
+import { adminController } from './adminController';
+import { AdminSchema, GetAdminSchema } from './adminSchema';
 
 export const adminRegistry = new OpenAPIRegistry();
 export const adminRouter: Router = express.Router();

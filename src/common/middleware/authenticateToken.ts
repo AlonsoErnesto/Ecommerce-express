@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { env } from '../utils/envConfig';
-import { ServiceResponse } from '../models/serviceResponse';
+import type { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import jwt, { type JwtPayload } from 'jsonwebtoken';
+import { ServiceResponse } from '../models/serviceResponse';
+import { env } from '../utils/envConfig';
 
 class Middlwares {
   private secretKey: string;
@@ -19,7 +19,7 @@ class Middlwares {
       return ServiceResponse.failure(
         'Error al verificar el token.',
         null,
-        StatusCodes.UNAUTHORIZED
+        StatusCodes.UNAUTHORIZED,
       );
     }
   }
@@ -33,8 +33,8 @@ class Middlwares {
           ServiceResponse.failure(
             'Acceso denegado. Se requiere rol de administrador.',
             null,
-            StatusCodes.FORBIDDEN
-          )
+            StatusCodes.FORBIDDEN,
+          ),
         );
     }
     next();
@@ -65,8 +65,8 @@ class Middlwares {
             ServiceResponse.failure(
               'Acceso denegado. Token no proporcionado.',
               null,
-              StatusCodes.UNAUTHORIZED
-            )
+              StatusCodes.UNAUTHORIZED,
+            ),
           );
       }
 
@@ -82,6 +82,8 @@ class Middlwares {
 
 // Exportar el middleware ya configurado
 const middlewareInstance = new Middlwares(env.SECRET_KEY_JWT);
-export const verifyCookie = middlewareInstance.verifyCookie.bind(middlewareInstance);
+export const verifyCookie =
+  middlewareInstance.verifyCookie.bind(middlewareInstance);
 export const jwtMiddleware = middlewareInstance.middleware();
-export const isAdminMiddleware = middlewareInstance.isAdmin.bind(middlewareInstance);
+export const isAdminMiddleware =
+  middlewareInstance.isAdmin.bind(middlewareInstance);

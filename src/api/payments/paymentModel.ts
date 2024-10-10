@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { Payment } from './paymentSchema';
+import type { Payment } from './paymentSchema';
 
 const PaymentSchema = new Schema<Payment & Document>({
   order_id: { type: String, required: true },
@@ -8,4 +8,7 @@ const PaymentSchema = new Schema<Payment & Document>({
   payment_status: { type: String, required: true },
 });
 
-export const PaymentModel = mongoose.model<Payment & Document>('Payment', PaymentSchema);
+export const PaymentModel = mongoose.model<Payment & Document>(
+  'Payment',
+  PaymentSchema,
+);

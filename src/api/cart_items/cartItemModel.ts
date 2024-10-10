@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { CartItem } from './cartItemSchema';
+import type { CartItem } from './cartItemSchema';
 
 const CartItemSchema = new Schema<CartItem & Document>({
   cart_id: { type: String, required: true },
@@ -9,4 +9,7 @@ const CartItemSchema = new Schema<CartItem & Document>({
   color: { type: String, required: true },
 });
 
-export const CartItemModel = mongoose.model<CartItem & Document>('CartItem', CartItemSchema);
+export const CartItemModel = mongoose.model<CartItem & Document>(
+  'CartItem',
+  CartItemSchema,
+);

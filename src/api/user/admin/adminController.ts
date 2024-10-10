@@ -6,7 +6,10 @@ import { adminService } from './adminService';
 class AdminController {
   // Método para login
   // En tu controlador
-  public login: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  public login: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const { email, password } = req.body;
 
@@ -30,12 +33,18 @@ class AdminController {
         res.status(200).json({ authenticated: true });
       } else {
         // Si hay error, por ejemplo, credenciales inválidas
-        res.status(401).json({ message: tokenResponse.message, authenticated: false });
+        res
+          .status(401)
+          .json({ message: tokenResponse.message, authenticated: false });
       }
     } catch (error) {
       // Manejo de errores inesperados
       console.error(error); // Añadir log de error para depuración
-      res.status(500).json({ message: 'Internal Server Error', error, authenticated: false });
+      res.status(500).json({
+        message: 'Internal Server Error',
+        error,
+        authenticated: false,
+      });
     }
   };
 

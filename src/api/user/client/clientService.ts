@@ -1,11 +1,11 @@
-import { logger } from '@/server';
-import { ClientRepository } from './clientRepository';
-import bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 import { ServiceResponse } from '@/common/models/serviceResponse';
-import { StatusCodes } from 'http-status-codes';
 import { env } from '@/common/utils/envConfig';
-import { Client } from './clientSchema';
+import { logger } from '@/server';
+import bcrypt from 'bcrypt';
+import { StatusCodes } from 'http-status-codes';
+import * as jwt from 'jsonwebtoken';
+import { ClientRepository } from './clientRepository';
+import type { Client } from './clientSchema';
 
 export class ClientService {
   private clientRepository: ClientRepository;
@@ -16,9 +16,13 @@ export class ClientService {
   async login(email: string, password: string) {
     const client = await this.clientRepository.findByEmail(email);
     if (!client) {
-      const errorMessage = `Client not found`;
+      const errorMessage = 'Client not found';
       logger.error(errorMessage);
-      return ServiceResponse.failure(`${errorMessage}`, null, StatusCodes.NO_CONTENT);
+      return ServiceResponse.failure(
+        `${errorMessage}`,
+        null,
+        StatusCodes.NO_CONTENT,
+      );
     }
 
     const isPasswordValid = await bcrypt.compare(password, client.password);
@@ -32,7 +36,7 @@ export class ClientService {
       env.SECRET_KEY_JWT,
       {
         expiresIn: '3h',
-      }
+      },
     );
     return ServiceResponse.success(token, 'Login Successful', StatusCodes.OK);
   }
@@ -41,7 +45,7 @@ export class ClientService {
     try {
       const existingClient = await this.clientRepository.findByEmailOrName(
         clientData.email,
-        clientData.name
+        clientData.name,
       );
       if (existingClient) throw new Error('Email or Name already in use');
       const hashedPassword = await bcrypt.hash(clientData.password, 10);
@@ -51,7 +55,11 @@ export class ClientService {
     } catch (ex) {
       const errorMessage = `Error creating user:${(ex as Error).message}`;
       logger.error(errorMessage);
-      return ServiceResponse.failure(`${errorMessage}`, null, StatusCodes.INTERNAL_SERVER_ERROR);
+      return ServiceResponse.failure(
+        `${errorMessage}`,
+        null,
+        StatusCodes.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

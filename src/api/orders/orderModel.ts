@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { Order } from './orderSchema';
+import type { Order } from './orderSchema';
 
 const OrderSchema = new Schema<Order & Document>({
   user_id: { type: String, required: true },
@@ -9,4 +9,7 @@ const OrderSchema = new Schema<Order & Document>({
   payment_method: { type: String, required: true },
 });
 
-export const OrderModel = mongoose.model<Order & Document>('Order', OrderSchema);
+export const OrderModel = mongoose.model<Order & Document>(
+  'Order',
+  OrderSchema,
+);

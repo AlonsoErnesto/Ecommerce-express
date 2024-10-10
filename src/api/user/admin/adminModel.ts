@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { Admin } from './adminSchema';
+import type { Admin } from './adminSchema';
 
 const AdminSchema = new Schema<Admin & Document>(
   {
@@ -10,7 +10,10 @@ const AdminSchema = new Schema<Admin & Document>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export const AdminModel = mongoose.model<Admin & Document>('Admin', AdminSchema);
+export const AdminModel = mongoose.model<Admin & Document>(
+  'Admin',
+  AdminSchema,
+);

@@ -1,6 +1,6 @@
 import { ServiceResponse } from '@/common/models/serviceResponse';
 import { ProductRepository } from './productRepository';
-import { Product } from './productSchema';
+import type { Product } from './productSchema';
 
 export class ProductService {
   private productRepository: ProductRepository;
@@ -9,7 +9,9 @@ export class ProductService {
     this.productRepository = repository;
   }
 
-  async createProduct(productData: Product): Promise<ServiceResponse<Product | null>> {
+  async createProduct(
+    productData: Product,
+  ): Promise<ServiceResponse<Product | null>> {
     try {
       const product = await this.productRepository.create(productData);
       return ServiceResponse.success('Product created successfully', product);
@@ -18,7 +20,9 @@ export class ProductService {
     }
   }
 
-  async getProductById(productId: string): Promise<ServiceResponse<Product | null>> {
+  async getProductById(
+    productId: string,
+  ): Promise<ServiceResponse<Product | null>> {
     try {
       const product = await this.productRepository.findById(productId);
       if (product) {
@@ -27,7 +31,10 @@ export class ProductService {
         return ServiceResponse.failure('Product not found', null);
       }
     } catch (error) {
-      return ServiceResponse.failure(`Error fetching product by ID: ${error}`, null);
+      return ServiceResponse.failure(
+        `Error fetching product by ID: ${error}`,
+        null,
+      );
     }
   }
 
@@ -36,30 +43,53 @@ export class ProductService {
       const products = await this.productRepository.findAll();
       return ServiceResponse.success('Products fetched successfully', products);
     } catch (error) {
-      return ServiceResponse.failure(`Error fetching all products: ${error}`, []);
+      return ServiceResponse.failure(
+        `Error fetching all products: ${error}`,
+        [],
+      );
     }
   }
 
-  async updateProduct(productId: string, productData: Partial<Product>): Promise<ServiceResponse<Product | null>> {
+  async updateProduct(
+    productId: string,
+    productData: Partial<Product>,
+  ): Promise<ServiceResponse<Product | null>> {
     try {
-      const updatedProduct = await this.productRepository.update(productId, productData);
+      const updatedProduct = await this.productRepository.update(
+        productId,
+        productData,
+      );
       if (updatedProduct) {
-        return ServiceResponse.success('Product updated successfully', updatedProduct);
+        return ServiceResponse.success(
+          'Product updated successfully',
+          updatedProduct,
+        );
       } else {
-        return ServiceResponse.failure('Product not found or update failed', null);
+        return ServiceResponse.failure(
+          'Product not found or update failed',
+          null,
+        );
       }
     } catch (error) {
       return ServiceResponse.failure(`Error updating product: ${error}`, null);
     }
   }
 
-  async deleteProduct(productId: string): Promise<ServiceResponse<Product | null>> {
+  async deleteProduct(
+    productId: string,
+  ): Promise<ServiceResponse<Product | null>> {
     try {
       const deletedProduct = await this.productRepository.delete(productId);
       if (deletedProduct) {
-        return ServiceResponse.success('Product deleted successfully', deletedProduct);
+        return ServiceResponse.success(
+          'Product deleted successfully',
+          deletedProduct,
+        );
       } else {
-        return ServiceResponse.failure('Product not found or deletion failed', null);
+        return ServiceResponse.failure(
+          'Product not found or deletion failed',
+          null,
+        );
       }
     } catch (error) {
       return ServiceResponse.failure(`Error deleting product: ${error}`, null);

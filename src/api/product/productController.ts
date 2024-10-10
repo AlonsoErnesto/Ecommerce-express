@@ -1,6 +1,6 @@
-import { Request, RequestHandler, Response } from 'express';
-import { ProductService } from './productService';
+import type { Request, RequestHandler, Response } from 'express';
 import { ProductSchema } from './productSchema';
+import { ProductService } from './productService';
 
 export class ProductController {
   private productService: ProductService;
@@ -9,7 +9,10 @@ export class ProductController {
     this.productService = service;
   }
 
-  createProduct: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  createProduct: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const parsedData = ProductSchema.parse(req.body);
       const product = await this.productService.createProduct(parsedData);
@@ -19,7 +22,10 @@ export class ProductController {
     }
   };
 
-  getAllProducts: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  getAllProducts: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const products = await this.productService.getAllProducts();
       res.json(products);
@@ -28,7 +34,10 @@ export class ProductController {
     }
   };
 
-  getProductById: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  getProductById: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const product = await this.productService.getProductById(req.params.id);
       if (product) {
@@ -41,10 +50,16 @@ export class ProductController {
     }
   };
 
-  updateProduct: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  updateProduct: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const parsedData = ProductSchema.partial().parse(req.body);
-      const product = await this.productService.updateProduct(req.params.id, parsedData);
+      const product = await this.productService.updateProduct(
+        req.params.id,
+        parsedData,
+      );
       if (product) {
         res.json(product);
       } else {
@@ -55,7 +70,10 @@ export class ProductController {
     }
   };
 
-  deleteProduct: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  deleteProduct: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const product = await this.productService.deleteProduct(req.params.id);
       if (product) {

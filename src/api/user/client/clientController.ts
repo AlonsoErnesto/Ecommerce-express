@@ -1,9 +1,12 @@
-import { Request, RequestHandler, Response } from 'express';
-import { clientService } from './clientService';
 import { handleServiceResponse } from '@/common/utils/httpHandlers';
+import type { Request, RequestHandler, Response } from 'express';
+import { clientService } from './clientService';
 
 class ClientController {
-  public login: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+  public login: RequestHandler = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       const { email, password } = req.body;
       const token = await clientService.login(email, password);

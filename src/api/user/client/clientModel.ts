@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { Client } from './clientSchema';
+import type { Client } from './clientSchema';
 
 const ClientSchema = new Schema<Client & Document>(
   {
@@ -10,7 +10,10 @@ const ClientSchema = new Schema<Client & Document>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export const ClientModel = mongoose.model<Client & Document>('Client', ClientSchema);
+export const ClientModel = mongoose.model<Client & Document>(
+  'Client',
+  ClientSchema,
+);

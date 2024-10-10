@@ -1,5 +1,5 @@
-import express, { Router } from 'express';
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
+import express, { type Router } from 'express';
 import { clientController } from './clientController';
 
 export const clientRegistry = new OpenAPIRegistry();

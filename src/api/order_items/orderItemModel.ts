@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { OrderItem } from './orderItemSchema';
+import type { OrderItem } from './orderItemSchema';
 
 const OrdenItemSchema = new Schema<OrderItem & Document>({
   order_id: { type: String, required: true },
@@ -11,4 +11,7 @@ const OrdenItemSchema = new Schema<OrderItem & Document>({
   total: { type: Number, required: true },
 });
 
-export const OrderItemModel = mongoose.model<OrderItem & Document>('OrderItem', OrdenItemSchema);
+export const OrderItemModel = mongoose.model<OrderItem & Document>(
+  'OrderItem',
+  OrdenItemSchema,
+);
